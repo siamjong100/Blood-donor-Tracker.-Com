@@ -1,0 +1,838 @@
+/* বেসিক স্টাইল */
+:root {
+    --primary-color: #e74c3c;
+    --primary-light: #ff6b57;
+    --primary-dark: #c0392b;
+    --secondary-color: #3498db;
+    --secondary-light: #5dade2;
+    --secondary-dark: #2980b9;
+    --success-color: #2ecc71;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --gray-color: #6c757d;
+    --border-radius: 10px;
+    --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Hind Siliguri', sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* হেডার স্টাইল */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.blood-icon {
+    color: var(--primary-color);
+    font-size: 28px;
+}
+
+.app-header h1 {
+    color: var(--primary-color);
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* বাটন স্টাইল */
+button {
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+button i {
+    font-size: 14px;
+}
+
+.primary-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.primary-btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.secondary-btn {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.secondary-btn:hover {
+    background-color: var(--secondary-dark);
+    transform: translateY(-2px);
+}
+
+.save-btn {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.save-btn:hover {
+    background-color: #27ae60;
+    transform: translateY(-2px);
+}
+
+.cancel-btn {
+    background-color: var(--gray-color);
+    color: white;
+}
+
+.cancel-btn:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+}
+
+/* দ্রুত খোঁজার সেকশন */
+.quick-search-section {
+    margin-bottom: 25px;
+}
+
+.search-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 20px;
+}
+
+.search-card h2 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+}
+
+.search-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.search-input-group {
+    position: relative;
+    display: flex;
+}
+
+.search-input-group input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 15px;
+    padding-right: 45px;
+}
+
+.search-input-group button {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--gray-color);
+    font-size: 18px;
+    padding: 0 10px;
+}
+
+.filter-options {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-options select {
+    flex: 1;
+    min-width: 150px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 14px;
+    background-color: white;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23343a40'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 15px;
+}
+
+/* ড্যাশবোর্ড স্টাইল */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stats-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: var(--transition);
+}
+
+.stats-card:hover {
+    transform: translateY(-5px);
+}
+
+.stats-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: white;
+}
+
+.stats-info h3 {
+    font-size: 16px;
+    color: var(--gray-color);
+    margin-bottom: 5px;
+}
+
+.stats-info p {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.eligible-card .stats-icon {
+    background-color: var(--success-color);
+}
+
+.upcoming-card .stats-icon {
+    background-color: var(--warning-color);
+}
+
+.total-card .stats-icon {
+    background-color: var(--secondary-color);
+}
+
+/* রেজাল্ট সেকশন */
+.results-section {
+    flex: 1;
+    margin-bottom: 30px;
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.results-header h2 {
+    color: var(--dark-color);
+    font-size: 18px;
+}
+
+.results-count {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 13px;
+}
+
+.donors-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px 20px;
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.empty-state i {
+    font-size: 50px;
+    color: var(--gray-color);
+    margin-bottom: 15px;
+}
+
+.empty-state p {
+    color: var(--gray-color);
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* ডোনার কার্ড স্টাইল */
+.donor-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 20px;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.donor-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.donor-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background-color: var(--primary-color);
+}
+
+.donor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+
+.donor-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: 5px;
+}
+
+.donor-id {
+    font-size: 12px;
+    color: var(--gray-color);
+    background-color: #f1f1f1;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.donor-blood {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.donor-info {
+    margin-bottom: 15px;
+}
+
+.donor-info p {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.donor-info i {
+    width: 20px;
+    color: var(--gray-color);
+}
+
+.donor-eligibility {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.eligibility-badge {
+    font-size: 13px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.eligibility-badge.eligible {
+    background-color: rgba(46, 204, 113, 0.2);
+    color: var(--success-color);
+}
+
+.eligibility-badge.soon {
+    background-color: rgba(243, 156, 18, 0.2);
+    color: var(--warning-color);
+}
+
+.eligibility-badge.not-eligible {
+    background-color: rgba(231, 76, 60, 0.2);
+    color: var(--danger-color);
+}
+
+.donor-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.donor-actions button {
+    flex: 1;
+    justify-content: center;
+    padding: 8px;
+    font-size: 13px;
+}
+
+.contact-btn {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.contact-btn:hover {
+    background-color: #27ae60;
+}
+
+.details-btn {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.details-btn:hover {
+    background-color: var(--secondary-dark);
+}
+
+/* মোডাল স্টাইল */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.modal-content {
+    background-color: white;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    max-width: 700px;
+    width: 100%;
+    position: relative;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--gray-color);
+    transition: var(--transition);
+}
+
+.close-btn:hover {
+    color: var(--dark-color);
+}
+
+.modal h2 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+}
+
+/* ফর্ম স্টাইল */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--dark-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 15px;
+    transition: var(--transition);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+}
+
+.form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.hint-text {
+    font-size: 13px;
+    color: var(--gray-color);
+    margin-top: 5px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.form-actions button {
+    flex: 1;
+}
+
+/* হিস্ট্রি সেকশন */
+.history-section {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.history-section h3 {
+    color: var(--dark-color);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.history-actions {
+    margin-bottom: 15px;
+}
+
+#historyList {
+    list-style: none;
+    max-height: 200px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+#historyList::-webkit-scrollbar {
+    width: 5px;
+}
+
+#historyList::-webkit-scrollbar-thumb {
+    background-color: #ddd;
+    border-radius: 5px;
+}
+
+#historyList li {
+    padding: 10px 15px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+#historyList li:last-child {
+    margin-bottom: 0;
+}
+
+.no-history {
+    color: var(--gray-color);
+    text-align: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+/* থিম অপশন */
+.theme-options {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.theme-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.theme-preview {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+}
+
+.light-theme {
+    background-color: #f8f9fa;
+}
+
+.dark-theme {
+    background-color: #343a40;
+}
+
+/* ডেটা ম্যানেজমেন্ট */
+.data-management {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.data-management h3 {
+    color: var(--dark-color);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.data-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.data-actions button {
+    flex: 1;
+    min-width: 150px;
+}
+
+/* ফুটার */
+.app-footer {
+    margin-top: auto;
+    padding: 20px 0;
+    background-color: white;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.footer-content p {
+    color: var(--gray-color);
+    font-size: 14px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 10px;
+}
+
+.footer-links button {
+    background: none;
+    border: none;
+    color: var(--gray-color);
+    padding: 0;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.footer-links button:hover {
+    color: var(--primary-color);
+    background: none;
+    transform: none;
+}
+
+/* ডার্ক থিম */
+body.dark-theme {
+    background-color: #212529;
+    color: #f8f9fa;
+}
+
+body.dark-theme .search-card,
+body.dark-theme .stats-card,
+body.dark-theme .donor-card,
+body.dark-theme .modal-content,
+body.dark-theme .app-footer {
+    background-color: #343a40;
+    color: #f8f9fa;
+}
+
+body.dark-theme .form-group input,
+body.dark-theme .form-group select,
+body.dark-theme .form-group textarea,
+body.dark-theme .search-input-group input,
+body.dark-theme .filter-options select {
+    background-color: #495057;
+    border-color: #6c757d;
+    color: #f8f9fa;
+}
+
+body.dark-theme .form-group label,
+body.dark-theme .modal h2,
+body.dark-theme .history-section h3,
+body.dark-theme .data-management h3,
+body.dark-theme .donor-name {
+    color: #f8f9fa;
+}
+
+body.dark-theme .donor-id,
+body.dark-theme #historyList li {
+    background-color: #495057;
+    color: #dee2e6;
+}
+
+body.dark-theme .empty-state,
+body.dark-theme .no-history {
+    background-color: #495057;
+    color: #dee2e6;
+}
+
+body.dark-theme .donor-info i,
+body.dark-theme .hint-text {
+    color: #adb5bd;
+}
+
+body.dark-theme .donor-card::before {
+    background-color: var(--primary-light);
+}
+
+/* রেস্পন্সিভ ডিজাইন */
+@media (max-width: 768px) {
+    .app-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-actions {
+        width: 100%;
+    }
+
+    .header-actions button {
+        flex: 1;
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .donors-list {
+        grid-template-columns: 1fr;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions,
+    .data-actions {
+        flex-direction: column;
+    }
+
+    .form-actions button,
+    .data-actions button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 20px;
+    }
+
+    .filter-options {
+        flex-direction: column;
+    }
+
+    .filter-options select {
+        width: 100%;
+    }
+}
