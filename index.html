@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>রক্তদাতা নেটওয়ার্ক</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- হেডার সেকশন -->
+        <header class="app-header">
+            <div class="logo">
+                <i class="fas fa-heartbeat blood-icon"></i>
+                <h1>রক্তদাতা নেটওয়ার্ক</h1>
+            </div>
+            <div class="header-actions">
+                <button id="quickSearchBtn" class="primary-btn">
+                    <i class="fas fa-search"></i> দ্রুত খুঁজুন
+                </button>
+                <button id="addDonorBtn" class="secondary-btn">
+                    <i class="fas fa-user-plus"></i> ডোনার যোগ করুন
+                </button>
+            </div>
+        </header>
+
+        <!-- দ্রুত খোঁজার সেকশন -->
+        <section class="quick-search-section" id="quickSearchSection">
+            <div class="search-card">
+                <h2><i class="fas fa-search-location"></i> রক্তদাতা খুঁজুন</h2>
+                <div class="search-controls">
+                    <div class="search-input-group">
+                        <input type="text" id="instantSearch" placeholder="নাম, ফোন বা রক্তের গ্রুপ লিখুন...">
+                        <button id="instantSearchBtn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="filter-options">
+                        <select id="bloodGroupFilter">
+                            <option value="">সব রক্তের গ্রুপ</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                        <select id="eligibilityFilter">
+                            <option value="all">সব ডোনার</option>
+                            <option value="eligible">আজ উপযুক্ত</option>
+                            <option value="soon">৭ দিনে উপযুক্ত</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ড্যাশবোর্ড স্ট্যাটস -->
+        <section class="dashboard">
+            <div class="stats-card eligible-card">
+                <div class="stats-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stats-info">
+                    <h3>আজ উপযুক্ত</h3>
+                    <p id="eligibleToday">0</p>
+                </div>
+            </div>
+            <div class="stats-card upcoming-card">
+                <div class="stats-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="stats-info">
+                    <h3>৭ দিনে উপযুক্ত</h3>
+                    <p id="upcomingEligible">0</p>
+                </div>
+            </div>
+            <div class="stats-card total-card">
+                <div class="stats-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stats-info">
+                    <h3>মোট ডোনার</h3>
+                    <p id="totalDonors">0</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- রেজাল্ট সেকশন -->
+        <section class="results-section">
+            <div class="results-header">
+                <h2 id="resultsTitle">উপযুক্ত রক্তদাতাদের তালিকা</h2>
+                <div class="results-count" id="resultsCount">0 জন পাওয়া গেছে</div>
+            </div>
+            
+            <div class="donors-list" id="donorsList">
+                <!-- ডাইনামিকভাবে ডোনার কার্ড লোড হবে -->
+                <div class="empty-state">
+                    <i class="fas fa-user-friends"></i>
+                    <p>কোনো ডোনার পাওয়া যায়নি। নতুন ডোনার যোগ করুন অথবা সার্চ ক্রাইটেরিয়া পরিবর্তন করুন।</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ডোনার মোডাল -->
+        <div class="modal" id="donorModal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2 id="modalTitle"><i class="fas fa-user-edit"></i> ডোনার প্রোফাইল</h2>
+                
+                <form id="donorForm">
+                    <input type="hidden" id="donorId">
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="name"><i class="fas fa-user"></i> নাম*</label>
+                            <input type="text" id="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="age"><i class="fas fa-birthday-cake"></i> বয়স*</label>
+                            <input type="number" id="age" min="18" max="65" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bloodGroup"><i class="fas fa-tint"></i> রক্তের গ্রুপ*</label>
+                            <select id="bloodGroup" required>
+                                <option value="">নির্বাচন করুন</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone"><i class="fas fa-phone"></i> ফোন নম্বর*</label>
+                            <input type="tel" id="phone" placeholder="০১XXXXXXXX" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="location"><i class="fas fa-map-marker-alt"></i> অবস্থান (জেলা/শহর)*</label>
+                            <input type="text" id="location" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastDonation"><i class="fas fa-calendar-alt"></i> সর্বশেষ রক্তদান*</label>
+                            <input type="date" id="lastDonation" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="notes"><i class="fas fa-notes-medical"></i> স্বাস্থ্য সংক্রান্ত নোট</label>
+                        <textarea id="notes" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">
+                            <i class="fas fa-save"></i> প্রোফাইল সেভ করুন
+                        </button>
+                        <button type="button" class="cancel-btn" id="cancelBtn">
+                            <i class="fas fa-times"></i> বাতিল করুন
+                        </button>
+                    </div>
+                </form>
+                
+                <div id="donationHistory" class="history-section">
+                    <h3><i class="fas fa-history"></i> রক্তদানের ইতিহাস</h3>
+                    <div class="history-actions">
+                        <button id="addDonationBtn" class="secondary-btn">
+                            <i class="fas fa-plus"></i> নতুন রক্তদান যোগ করুন
+                        </button>
+                    </div>
+                    <ul id="historyList">
+                        <li class="no-history">কোনো রক্তদানের রেকর্ড নেই</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- সিস্টেম সেটিংস মোডাল -->
+        <div class="modal" id="settingsModal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2><i class="fas fa-cog"></i> সিস্টেম সেটিংস</h2>
+                
+                <form id="settingsForm">
+                    <div class="form-group">
+                        <label for="donationInterval"><i class="fas fa-calendar-day"></i> রক্তদান ব্যবধান (দিন)*</label>
+                        <input type="number" id="donationInterval" min="60" max="180" value="90" required>
+                        <p class="hint-text">সাধারণত পুরুষদের জন্য ৩ মাস (৯০ দিন) এবং মহিলাদের জন্য ৪ মাস (১২০ দিন)</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="theme"><i class="fas fa-palette"></i> থিম সিলেক্ট করুন</label>
+                        <div class="theme-options">
+                            <label class="theme-option">
+                                <input type="radio" name="theme" value="light" checked> 
+                                <span class="theme-preview light-theme"></span>
+                                লাইট মোড
+                            </label>
+                            <label class="theme-option">
+                                <input type="radio" name="theme" value="dark"> 
+                                <span class="theme-preview dark-theme"></span>
+                                ডার্ক মোড
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="data-management">
+                        <h3><i class="fas fa-database"></i> ডেটা ম্যানেজমেন্ট</h3>
+                        <div class="data-actions">
+                            <button type="button" id="exportDataBtn" class="secondary-btn">
+                                <i class="fas fa-file-export"></i> ডেটা এক্সপোর্ট
+                            </button>
+                            <button type="button" id="importDataBtn" class="secondary-btn">
+                                <i class="fas fa-file-import"></i> ডেটা ইম্পোর্ট
+                            </button>
+                            <button type="button" id="syncDataBtn" class="primary-btn">
+                                <i class="fas fa-sync-alt"></i> ক্লাউডে সিঙ্ক করুন
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="save-btn">
+                            <i class="fas fa-save"></i> সেটিংস সেভ করুন
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ফুটার -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <p>রক্তদাতা নেটওয়ার্ক - একটি সামাজিক উদ্যোগ রক্ত দান একটি মহৎ কাজ, রক্ত দিয়ে আর্থ নেওয়া থেকে বিরত থাকুন।(কোনো প্রকার আর্থিক লেনদেন করা থেকে বিরত থাকুন)</p>
+                <div class="footer-links">
+                    <button id="settingsBtn"><i class="fas fa-cog"></i> সেটিংস</button>
+                    <button id="helpBtn"><i class="fas fa-question-circle"></i> সাহায্য</button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
