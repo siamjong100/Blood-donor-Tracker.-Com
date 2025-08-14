@@ -31,6 +31,38 @@ body {
     min-height: 100vh;
 }
 
+/* হেডলাইন বার */
+.headline-bar {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 0;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.headline-content {
+    display: inline-block;
+    padding-left: 100%;
+    animation: scroll 30s linear infinite;
+}
+
+.headline-content span {
+    display: inline-block;
+    padding-right: 20px;
+}
+
+.headline-content i {
+    margin-right: 8px;
+    color: #ffcccb;
+}
+
+@keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -128,6 +160,16 @@ button i {
 
 .cancel-btn:hover {
     background-color: #5a6268;
+    transform: translateY(-2px);
+}
+
+.danger-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.danger-btn:hover {
+    background-color: #c0392b;
     transform: translateY(-2px);
 }
 
@@ -731,10 +773,57 @@ button i {
     transform: none;
 }
 
+/* কাস্টম এলার্ট */
+.custom-alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    max-width: 400px;
+    width: 90%;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    z-index: 2000;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.3s ease;
+}
+
+.custom-alert.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.alert-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.alert-header h3 {
+    font-size: 16px;
+    margin: 0;
+}
+
+.alert-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.alert-message {
+    flex: 1;
+}
+
 /* ডার্ক থিম */
 body.dark-theme {
     background-color: #212529;
     color: #f8f9fa;
+}
+
+body.dark-theme .headline-bar {
+    background-color: var(--primary-dark);
 }
 
 body.dark-theme .search-card,
@@ -834,5 +923,9 @@ body.dark-theme .donor-card::before {
 
     .filter-options select {
         width: 100%;
+    }
+
+    .headline-content {
+        animation: scroll 20s linear infinite;
     }
 }
