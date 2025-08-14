@@ -9,6 +9,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <!-- স্ক্রলিং হেডলাইন বার -->
+    <div class="headline-bar">
+        <div class="headline-content">
+            <span><i class="fas fa-heart"></i> রক্তদান একটি মহৎ কাজ - কোন প্রকার আর্থিক লেনদেন থেকে বিরত থাকুন | ৩ মাসে আপনার রক্ত তৈরি হবে কিন্তু একজন মানুষ গেলে সে আর কখনো আসবে না | ডোনারকে আপনার সর্বোচ্চ সম্মান প্রদান করুন | রক্তের বিনিময়ে রক্ত নয়, মানবতা দিন 💝 | জরুরি প্রয়োজ এ হামজা,জাহিন,নূর,সজিব কে কল করুন ধন্যবাদ। </span>
+        </div>
+    </div>
+
     <div class="container">
         <!-- হেডার সেকশন -->
         <header class="app-header">
@@ -138,7 +145,7 @@
                         </div>
                         <div class="form-group">
                             <label for="phone"><i class="fas fa-phone"></i> ফোন নম্বর*</label>
-                            <input type="tel" id="phone" placeholder="০১XXXXXXXX" required>
+                            <input type="tel" id="phone" placeholder="০১XXXXXXXX" pattern="01[3-9]{1}[0-9]{8}" required>
                         </div>
                         <div class="form-group">
                             <label for="location"><i class="fas fa-map-marker-alt"></i> অবস্থান (জেলা/শহর)*</label>
@@ -162,6 +169,9 @@
                         <button type="button" class="cancel-btn" id="cancelBtn">
                             <i class="fas fa-times"></i> বাতিল করুন
                         </button>
+                        <button type="button" class="danger-btn" id="deleteDonorBtn">
+                            <i class="fas fa-trash-alt"></i> ডিলিট করুন
+                        </button>
                     </div>
                 </form>
                 
@@ -175,6 +185,29 @@
                     <ul id="historyList">
                         <li class="no-history">কোনো রক্তদানের রেকর্ড নেই</li>
                     </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- ডিলিট কনফার্মেশন মোডাল -->
+        <div class="modal" id="deleteModal">
+            <div class="modal-content" style="max-width: 500px;">
+                <span class="close-btn">&times;</span>
+                <h2><i class="fas fa-exclamation-triangle"></i> ডোনার ডিলিট করুন</h2>
+                
+                <div class="form-group">
+                    <label for="deletePassword"><i class="fas fa-lock"></i> পাসওয়ার্ড লিখুন*</label>
+                    <input type="password" id="deletePassword" placeholder="ডিলিট করার জন্য পাসওয়ার্ড দিন" required>
+                    <p class="hint-text">এই ডোনারকে সম্পূর্ণভাবে ডিলিট করতে চান? এই কাজটি রিভার্স করা যাবে না।</p>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="danger-btn" id="confirmDeleteBtn">
+                        <i class="fas fa-trash-alt"></i> ডিলিট করুন
+                    </button>
+                    <button type="button" class="cancel-btn" id="cancelDeleteBtn">
+                        <i class="fas fa-times"></i> বাতিল করুন
+                    </button>
                 </div>
             </div>
         </div>
@@ -235,7 +268,7 @@
         <!-- ফুটার -->
         <footer class="app-footer">
             <div class="footer-content">
-                <p>রক্তদাতা নেটওয়ার্ক - একটি সামাজিক উদ্যোগ রক্ত দান একটি মহৎ কাজ, রক্ত দিয়ে আর্থ নেওয়া থেকে বিরত থাকুন।(কোনো প্রকার আর্থিক লেনদেন করা থেকে বিরত থাকুন)</p>
+                <p>রক্তদাতা নেটওয়ার্ক - একটি সামাজিক উদ্যোগ</p>
                 <div class="footer-links">
                     <button id="settingsBtn"><i class="fas fa-cog"></i> সেটিংস</button>
                     <button id="helpBtn"><i class="fas fa-question-circle"></i> সাহায্য</button>
