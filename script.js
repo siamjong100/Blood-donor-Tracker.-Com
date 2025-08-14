@@ -5,6 +5,9 @@ const JSONBIN_API = {
     BIN_ID: "689c8424ae596e708fc91d40"
 };
 
+// ডিলিট পাসওয়ার্ড
+const DELETE_PASSWORD = "1q2w3e4r5t";
+
 // অ্যাপ্লিকেশন স্টেট
 let appState = {
     donors: [],
@@ -16,7 +19,9 @@ let appState = {
     currentDonor: null,
     searchQuery: "",
     bloodGroupFilter: "",
-    eligibilityFilter: "all"
+    eligibilityFilter: "all",
+    deviceId: null,
+    lastAddedDonor: null
 };
 
 // DOM এলিমেন্টস
@@ -24,12 +29,16 @@ const donorsListEl = document.getElementById('donorsList');
 const donorFormEl = document.getElementById('donorForm');
 const donorModalEl = document.getElementById('donorModal');
 const settingsModalEl = document.getElementById('settingsModal');
+const deleteModalEl = document.getElementById('deleteModal');
 const settingsFormEl = document.getElementById('settingsForm');
 const instantSearchEl = document.getElementById('instantSearch');
 const bloodGroupFilterEl = document.getElementById('bloodGroupFilter');
 const eligibilityFilterEl = document.getElementById('eligibilityFilter');
 const resultsTitleEl = document.getElementById('resultsTitle');
 const resultsCountEl = document.getElementById('resultsCount');
+const deleteDonorBtn = document.getElementById('deleteDonorBtn');
+const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
 
 // ইভেন্ট লিসেনার
 document.getElementById('addDonorBtn').addEventListener('click', () => openDonorModal());
@@ -45,6 +54,9 @@ document.getElementById('syncDataBtn').addEventListener('click', syncWithCloud);
 instantSearchEl.addEventListener('input', handleInstantSearch);
 bloodGroupFilterEl.addEventListener('change', updateFilters);
 eligibilityFilterEl.addEventListener('change', updateFilters);
+deleteDonorBtn.addEventListener('click', confirmDeleteDonor);
+confirmDeleteBtn.addEventListener('click', deleteDonor);
+cancelDeleteBtn.addEventListener('click', () => deleteModalEl.style.display = 'none');
 
 // ফর্ম সাবমিশন
 donorFormEl.addEventListener('submit', saveDonor);
@@ -55,9 +67,21 @@ document.addEventListener('DOMContentLoaded', initializeApp);
 
 // ইনিশিয়ালাইজেশন ফাংশন
 function initializeApp() {
+    // ডিভাইস আইডি জেনারেট বা রিট্রিভ করুন
+    appState.deviceId = getDeviceId();
     loadData();
     applyTheme();
     renderDonorList();
+}
+
+// ডিভাইস আইডি জেনারেট বা রিট্রিভ করুন
+function getDeviceId() {
+    let deviceId = localStorage.getItem('deviceId');
+    if (!deviceId) {
+        deviceId = 'dev-' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('deviceId', deviceId);
+    }
+    return deviceId;
 }
 
 // ডেটা লোড ফাংশন
@@ -154,7 +178,8 @@ function mergeDonors(localDonors, cloudDonors) {
 function saveDataToLocal() {
     const dataToSave = {
         donors: appState.donors,
-        config: appState.config
+        config: appState.config,
+        lastAddedDonor: appState.lastAddedDonor
     };
     
     localStorage.setItem('bloodDonorData', JSON.stringify(dataToSave));
@@ -163,7 +188,8 @@ function saveDataToLocal() {
 async function saveDataToCloud() {
     const dataToSave = {
         donors: appState.donors,
-        config: appState.config
+        config: appState.config,
+        lastAddedDonor: appState.lastAddedDonor
     };
     
     try {
@@ -441,6 +467,18 @@ function updateFilters() {
 
 // ডোনার মোডাল ওপেন
 function openDonorModal(donor = null) {
+    // চেক করুন যে একই ডিভাইস থেকে একাধিকবার যোগ করা হচ্ছে কিনা
+    if (!donor && appState.lastAddedDonor && appState.lastAddedDonor.deviceId === appState.deviceId) {
+        const lastAddedTime = new Date(appState.lastAddedDonor.timestamp);
+        const currentTime = new Date();
+        const diffInHours = (currentTime - lastAddedTime) / (1000 * 60 * 60);
+        
+        if (diffInHours < 24) {
+            showAlert("warning", `আপনি ইতিমধ্যে আজকে একজন ডোনার যোগ করেছেন। ২৪ ঘন্টা পর আবার চেষ্টা করুন।`);
+            return;
+        }
+    }
+    
     appState.currentDonor = donor;
     
     if (donor) {
@@ -459,12 +497,14 @@ function openDonorModal(donor = null) {
         document.getElementById('lastDonation').value = lastDonation;
         renderDonationHistory(donor.donations || []);
         document.getElementById('donationHistory').style.display = 'block';
+        document.getElementById('deleteDonorBtn').style.display = 'block';
     } else {
         document.getElementById('modalTitle').innerHTML = '<i class="fas fa-user-plus"></i> নতুন ডোনার যোগ করুন';
         donorFormEl.reset();
         document.getElementById('donorId').value = generateDonorId();
         document.getElementById('lastDonation').value = new Date().toISOString().split('T')[0];
         document.getElementById('donationHistory').style.display = 'none';
+        document.getElementById('deleteDonorBtn').style.display = 'none';
     }
     
     donorModalEl.style.display = 'block';
@@ -522,6 +562,11 @@ async function saveDonor(e) {
         } else {
             // Add new donor
             appState.donors.push(donorData);
+            // সর্বশেষ যোগ করা ডোনার রেকর্ড করুন
+            appState.lastAddedDonor = {
+                deviceId: appState.deviceId,
+                timestamp: new Date().toISOString()
+            };
         }
         
         // লোকাল এবং ক্লাউডে সেভ করুন
@@ -539,6 +584,49 @@ async function saveDonor(e) {
     } catch (error) {
         console.error("ডোনার সেভ করতে সমস্যা:", error);
         showAlert("error", "ডোনার সেভ করতে সমস্যা হয়েছে");
+    } finally {
+        hideLoading();
+    }
+}
+
+// ডোনার ডিলিট কনফার্মেশন
+function confirmDeleteDonor() {
+    if (!appState.currentDonor) return;
+    
+    deleteModalEl.style.display = 'block';
+}
+
+// ডোনার ডিলিট করুন
+async function deleteDonor() {
+    const password = document.getElementById('deletePassword').value;
+    if (password !== DELETE_PASSWORD) {
+        showAlert("error", "ভুল পাসওয়ার্ড! ডিলিট করা সম্ভব হয়নি।");
+        return;
+    }
+    
+    showLoading();
+    
+    try {
+        const index = appState.donors.findIndex(d => d.id === appState.currentDonor.id);
+        if (index !== -1) {
+            appState.donors.splice(index, 1);
+            
+            // লোকাল এবং ক্লাউডে সেভ করুন
+            saveDataToLocal();
+            const cloudSaved = await saveDataToCloud();
+            
+            updateUI();
+            closeAllModals();
+            
+            showAlert("success", "ডোনার সফলভাবে ডিলিট করা হয়েছে");
+            
+            if (!cloudSaved) {
+                showAlert("warning", "ডেটা ক্লাউডে সেভ করতে সমস্যা হয়েছে, শুধুমাত্র লোকালে সেভ করা হয়েছে");
+            }
+        }
+    } catch (error) {
+        console.error("ডোনার ডিলিট করতে সমস্যা:", error);
+        showAlert("error", "ডোনার ডিলিট করতে সমস্যা হয়েছে");
     } finally {
         hideLoading();
     }
@@ -734,7 +822,8 @@ function showHelp() {
         
         <strong>১. নতুন ডোনার যোগ:</strong><br>
         - "ডোনার যোগ করুন" বাটনে ক্লিক করুন<br>
-        - ফর্মটি পূরণ করুন এবং সেভ করুন<br><br>
+        - ফর্মটি পূরণ করুন এবং সেভ করুন<br>
+        - প্রতিটি ডিভাইস থেকে ২৪ ঘন্টায় মাত্র ১ জন ডোনার যোগ করা যাবে<br><br>
         
         <strong>২. রক্তদাতা খুঁজুন:</strong><br>
         - সার্চ বারে নাম, ফোন বা রক্তের গ্রুপ লিখুন<br>
@@ -746,7 +835,12 @@ function showHelp() {
         
         <strong>৪. ডেটা ম্যানেজমেন্ট:</strong><br>
         - সেটিংস থেকে ডেটা এক্সপোর্ট/ইম্পোর্ট করতে পারবেন<br>
-        - ক্লাউডে ডেটা সিঙ্ক করতে "সিঙ্ক করুন" বাটন ব্যবহার করুন
+        - ক্লাউডে ডেটা সিঙ্ক করতে "সিঙ্ক করুন" বাটন ব্যবহার করুন<br><br>
+        
+        <strong>৫. ডোনার ডিলিট:</strong><br>
+        - ডোনার প্রোফাইলে গিয়ে ডিলিট বাটনে ক্লিক করুন<br>
+        - পাসওয়ার্ড দিন (1q2w3e4r5t)<br>
+        - কনফার্ম করুন
     `;
     
     showAlert("info", helpMessage, "সাহায্য কেন্দ্র");
@@ -757,6 +851,16 @@ function closeAllModals() {
     document.querySelectorAll('.modal').forEach(modal => {
         modal.style.display = 'none';
     });
+    document.getElementById('deletePassword').value = '';
+}
+
+function closeDonorModal() {
+    donorModalEl.style.display = 'none';
+    appState.currentDonor = null;
+}
+
+function closeSettingsModal() {
+    settingsModalEl.style.display = 'none';
 }
 
 // লোডিং স্টেট দেখান
@@ -840,10 +944,4 @@ function formatDate(date) {
     };
     
     return date.toLocaleDateString('bn-BD', options);
-}
-
-// ডোনার মোডাল বন্ধ করুন
-function closeDonorModal() {
-    donorModalEl.style.display = 'none';
-    appState.currentDonor = null;
 }
